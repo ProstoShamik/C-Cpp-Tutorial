@@ -1,20 +1,39 @@
 #include <stdio.h>
 #include <stdint.h>
 
-void accumulate(int64_t* sum, int64_t* num, int64_t value)
+typedef int64_t accumulateInt;
+
+typedef struct
 {
-	*sum += value;
-	(*num)++;
+	accumulateInt sum;
+	accumulateInt num;
+} accumulateData;
+
+void newAccumulateData(accumulateData* data)
+{
+	data->num = 0;
+	data->sum = 0;
+}
+
+void accumulate(accumulateData* data , int64_t value)
+{
+	data->sum += value;
+	(data->num)++;
+}
+
+int32_t accumulateResult(accumulateData* data)
+{
+	return data->sum / data->num;
 }
 
 int main()
 {
-	int64_t sum = 0;
-	int64_t num = 0;
+	accumulateData data;
+	newAccumulateData(&data);
 
-	accumulate(&sum, &num, 10);
-	accumulate(&sum, &num, 20);
+	accumulate(&data, 10);
+	accumulate(&data, 20);
 
-	int64_t avg = sum / num;
+	int64_t avg = accumulateResult(&data);
 	printf("The average is %lli", avg);
 }
