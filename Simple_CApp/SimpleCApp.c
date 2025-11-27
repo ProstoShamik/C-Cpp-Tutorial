@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 int32_t f(int32_t x);
 void execute_print(int32_t x, int32_t count);
@@ -39,11 +40,23 @@ int32_t f(int32_t x)
 
 void execute_print(int32_t x, int32_t count)
 {
-    for (int32_t i = 0; i < count; i++)
-    {
-        int32_t y = f(i * x);
-        print_fx(i * x, y);
+    int32_t* y_value = (int32_t*)malloc(count * sizeof(int32_t));
+
+    if (y_value == NULL) {
+        
+        return;
     }
+
+    for (int32_t i = 1; i <= count; i++)
+    {
+        y_value[i - 1] = f(i * x);
+    }
+    for (int32_t i = 1; i <= count; i++)
+    {
+        print_fx(i * x, y_value[i-1]);
+    }
+
+    free(y_value);
 };
 
 int scan_int(int32_t* x)
